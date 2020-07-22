@@ -18,22 +18,28 @@ const App = () => {
     }
 };
 
-const PlanetInfo = ({id}) => {
+const usePlanetInfo = (id) => {
     const [name, setName] = useState(null);
 
     useEffect(() => {
         let cancelled = false;
 
         fetch(`https://swapi.dev/api/planets/${id}`)
-                .then(response => response.json())
-                .then(data => !cancelled && setName(data.name));
+            .then(response => response.json())
+            .then(data => !cancelled && setName(data.name));
 
         return () => cancelled = true;
-        }, [id]);
+    }, [id]);
 
-      return (
-          <div>{id} - Planet {name}</div>
-      );
+    return name;
+};
+
+const PlanetInfo = ({id}) => {
+    const name = usePlanetInfo(id);
+
+    return (
+        <div>{id} - Planet {name}</div>
+    );
 };
 
 const HookCounter = ({ value }) => {
